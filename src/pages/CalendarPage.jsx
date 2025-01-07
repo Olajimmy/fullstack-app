@@ -28,11 +28,12 @@ function CalendarPage() {
   const loading = () => {
     return <h3>there dont seem to be an entries yet</h3>;
   };
+  //
   const loaded = () => {
     <ul style={{ listStyleType: "none" }}>
       {entries.map((entry) => {
         return (
-          <li>
+          <li style={{ width: "80%" }}>
             {entry.startDate}: {entry.label}
           </li>
         );
