@@ -25,17 +25,21 @@ function BrainDumpPage() {
 
     try {
       const response = await axios.get(`${LOCAL_URL}/api/braindump`);
-      console.log(response.data);
+      console.log("response.data", response.data);
       setEntries(response.data);
     } catch (err) {
-      console.err(err);
+      console.error(err);
     }
   };
   //
   const addEntry = async (newEntry) => {
     let error = false;
+    let addedEntry = {};
     try {
-      const response = await axios.get(`${LOCAL_URL}/api/braindump`, newEntry);
+      const response = await axios.post(`${LOCAL_URL}/api/braindump`, newEntry);
+      addedEntry = response.data;
+      console.log("addedEntry", response.data);
+      setEntries(response.data);
     } catch (e) {
       error = true;
       console.error(e);
@@ -46,30 +50,69 @@ function BrainDumpPage() {
       } else {
         //once i actually implement the post route in my backend, i will show added entry
 
-        setUpdate("successfully added");
+        setUpdate(
+          `successfully added:, ${addedEntry.entryType} - ${addedEntry.description} -id: ${addedEntry._id}`
+        );
+        console.log(
+          `${addedEntry.entryType} - ${addedEntry.description} -id: ${addedEntry._id}`
+        );
       }
     }
   };
+
   //
   useEffect(() => {
     getEntries();
-  }, []);
+  }, [update]);
+  //
 
-  const loading = () => {
-    return <h3>there dont seem to be an entries yet</h3>;
+  const deleteEntry = async (id) => {
+    try {
+      const response = await axios.delete(`${LOCAL_URL}/api/braindump/${id}`);
+      console.log(response);
+      setUpdate(`deleted entry ${id} successfully `);
+    } catch (err) {
+      console.error(err);
+      setUpdate(`delete failed`);
+    }
   };
+  //
+  const editEntry = async (id) => {
+    try {
+      const response = await axios.put(`${LOCAL_URL}/api/braindump/${id}`);
+    } catch (err) {
+      console.error(err);
+      setUpdate(`edit failed`);
+    }
+  };
+
+  const handleEdit = (e, id) => {
+    console.log(`editing .... entry`);
+    //add in a function editEntry
+    console.log(e, id);
+  };
+  //
+  const handleDelete = (e, id) => {
+    console.log(`deleting ... entry`);
+    // console.log(e, id);
+    deleteEntry(id);
+
+    //add in a function deleteEntry
+  };
+
   //
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`in handleSubmit`);
     let newEntry = {};
+    console.log(`in handleSubmit`);
+
     console.log(entType);
     //this is where i will send my post request to the backend
     setFormData({ ...formData, entryType: entType });
     console.log(formData);
     newEntry = {
       entryDate: formData.entryDate,
-      entryType: entType,
+      entryType: entType || "None",
       description: formData.description,
     };
     console.log(newEntry);
@@ -85,23 +128,42 @@ function BrainDumpPage() {
   const handleTypeSelect = (e) => {
     setEntType(e.target.value);
   };
+  //
+  const loading = () => {
+    return <h3>there dont seem to be an entries yet</h3>;
+  };
 
   const loaded = () => {
-    <ul
-      style={{
-        listStyleType: "none",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {entries.map((entry) => {
-        return (
-          <li style={{ width: "80%" }}>
-            {entry.entryDate}: {entry.type}:{entry.description}
-          </li>
-        );
-      })}
-    </ul>;
+    return (
+      <ul
+        style={{
+          listStyleType: "none",
+          display: "flex",
+          flexDirection: "column",
+          border: "1px solid white",
+        }}
+      >
+        {entries.map((entry) => {
+          return (
+            <>
+              <li style={{ width: "80%" }}>
+                {entry.entryDate}: {entry.entryType} : {entry.description}
+                <button
+                  onClick={(e) => {
+                    handleEdit(e, entry._id);
+                  }}
+                >
+                  Edit
+                </button>
+                <button onClick={(e) => handleDelete(e, entry._id)}>
+                  Delete
+                </button>
+              </li>
+            </>
+          );
+        })}
+      </ul>
+    );
   };
 
   return (
