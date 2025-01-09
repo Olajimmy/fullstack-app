@@ -80,17 +80,42 @@ function BrainDumpPage() {
   const editEntry = async (id) => {
     try {
       const response = await axios.put(`${LOCAL_URL}/api/braindump/${id}`);
+
+      console.log(`edit`, response.data);
+      let newData = response.data;
+      console.log(
+        "entry date",
+        newData.entryDate,
+        "entry type:",
+        newData.entryType
+      );
+      setFormData(newData.entryType);
+
+      //setFormData();
+      setUpdate(`edited data ${id} successfully`);
     } catch (err) {
       console.error(err);
       setUpdate(`edit failed`);
     }
   };
 
-  const handleEdit = (e, id) => {
+  const handleEdit = async (e, id) => {
     console.log(`editing .... entry`);
+    editEntry(id);
     //add in a function editEntry
-    console.log(e, id);
+    // console.log(id);
+    // const response = await axios.get(`${LOCAL_URL}/api/braindump/${id}`);
+    // // console.log(" edit get", response.data);
+    // const newVal = response.data;
+    // console.log(newVal);
+    // const newValues = [...formData, id]; // Copy the current values array
+    // //newValues[i] = event.target.value;
+    // console.log(newValues[id]); //shows the text value in it
+    //setFormData(newValues[id]);
+    // setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  //
+  const handleSave = (e, id) => {};
   //
   const handleDelete = (e, id) => {
     console.log(`deleting ... entry`);
@@ -154,6 +179,13 @@ function BrainDumpPage() {
                   }}
                 >
                   Edit
+                </button>
+                <button
+                  onClick={(e) => {
+                    handleSave(e, entry._id);
+                  }}
+                >
+                  Save
                 </button>
                 <button onClick={(e) => handleDelete(e, entry._id)}>
                   Delete

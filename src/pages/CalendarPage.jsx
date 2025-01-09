@@ -30,15 +30,17 @@ function CalendarPage() {
   };
   //
   const loaded = () => {
-    <ul style={{ listStyleType: "none" }}>
-      {entries.map((entry) => {
-        return (
-          <li style={{ width: "80%" }}>
-            {entry.startDate}: {entry.label}
-          </li>
-        );
-      })}
-    </ul>;
+    return (
+      <ul style={{ listStyleType: "none" }}>
+        {entries.map((entry) => {
+          return (
+            <li style={{ width: "80%" }}>
+              {entry.startDate}: {entry.label}
+            </li>
+          );
+        })}
+      </ul>
+    );
   };
 
   return (

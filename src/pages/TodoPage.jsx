@@ -32,22 +32,24 @@ function TodoPage() {
   };
   //
   const loaded = () => {
-    <ul
-      style={{
-        listStyleType: "none",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {entries.map((entry) => {
-        return (
-          <li style={{ width: "80%" }}>
-            {entry.due}: {entry.completed ? <>DONE</> : <>_______</>}:
-            {entry.text}
-          </li>
-        );
-      })}
-    </ul>;
+    return (
+      <ul
+        style={{
+          listStyleType: "none",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {entries.map((entry) => {
+          return (
+            <li style={{ width: "80%" }}>
+              {entry.due}: {entry.completed ? <>DONE</> : <>_______</>}:
+              {entry.text}
+            </li>
+          );
+        })}
+      </ul>
+    );
   };
 
   return (

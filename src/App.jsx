@@ -7,9 +7,10 @@ import AuthPage from "./pages/AuthPage";
 import BrainDumpPage from "./pages/BrainDumpPage";
 import CalendarPage from "./pages/CalendarPage";
 import Nav from "./components/Nav";
+import { getUser } from "./utilities/users-services";
 
 function App() {
-  const [user, setUser] = useState("any user");
+  const [user, setUser] = useState(getUser());
 
   return (
     <>
@@ -17,7 +18,7 @@ function App() {
         <>
           <Nav />
 
-          <div> Nav Bar {user}</div>
+          <div> Nav Bar {user.name}</div>
           <h1>Calendar App</h1>
           <Routes>
             <Route path="/" element={<Welcome />} />
@@ -29,7 +30,7 @@ function App() {
           </Routes>
         </>
       ) : (
-        <AuthPage />
+        <AuthPage setUser={setUser} />
       )}
     </>
   );
