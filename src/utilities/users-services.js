@@ -11,10 +11,7 @@ export async function signUp(userData) {
   //we will also eventually save the token in local storage
   localStorage.setItem("token", token);
 
-  return {
-    name: userData.name,
-    email: userData.email,
-  };
+  return getUser();
 }
 
 export function getToken() {
@@ -38,4 +35,8 @@ export function getUser() {
   const token = getToken();
   //split the token, parse the second part of it, once you decode, access the user key in the object //if there is a token, return the user in the payload, otherwise return null
   return token ? JSON.parse(atob(token.split(".")[1])).user : null;
+}
+
+export function logOut() {
+  localStorage.removeItem("token");
 }
