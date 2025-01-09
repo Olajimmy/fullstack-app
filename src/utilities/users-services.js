@@ -19,6 +19,7 @@ export async function login(credentials) {
 
   //persist the token
   localStorage.setItem("token", token);
+  console.log(token);
   return getUser();
 }
 

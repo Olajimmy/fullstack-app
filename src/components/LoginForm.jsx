@@ -5,7 +5,7 @@ import userServices from "../utilities/users-services";
 
 //
 
-function LoginForm() {
+function LoginForm({ setUser }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -20,6 +20,8 @@ function LoginForm() {
   async function handleSubmit(e) {
     e.preventDefault();
     //console.log(formData);
+    const credentials = { ...formData };
+    console.log(credentials);
     try {
       //the promise returned by the login service method will resolve to the user
 
@@ -59,12 +61,7 @@ function LoginForm() {
           <br />
 
           <br />
-          <button
-            type="submit"
-            disabled={formData.password !== formData.confirm}
-          >
-            Login
-          </button>
+          <button type="submit">Login</button>
         </form>
         <p>{error}</p>
       </div>
